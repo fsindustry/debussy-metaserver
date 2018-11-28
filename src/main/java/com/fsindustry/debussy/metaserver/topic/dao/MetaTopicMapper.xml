@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fsindustry.debussy.metaserver.topic.dao.MetaTopicMapper">
+  <resultMap id="BaseResultMap" type="com.fsindustry.debussy.metaserver.topic.entity.MetaTopic">
+    <id column="topic_id" jdbcType="BIGINT" property="topicId" />
+    <result column="topic_name" jdbcType="VARCHAR" property="topicName" />
+    <result column="partition_count" jdbcType="INTEGER" property="partitionCount" />
+    <result column="replication_factor" jdbcType="INTEGER" property="replicationFactor" />
+    <result column="msg_timestamp_type" jdbcType="VARCHAR" property="msgTimestampType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_by" jdbcType="BIGINT" property="createBy" />
+    <result column="update_by" jdbcType="BIGINT" property="updateBy" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="cluster_id" jdbcType="INTEGER" property="clusterId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    topic_id, topic_name, partition_count, replication_factor, msg_timestamp_type, create_time, 
+    update_time, create_by, update_by, enabled, deleted, user_id, cluster_id
+  </sql>
+  <select id="selectByExample" parameterType="com.fsindustry.debussy.metaserver.topic.entity.MetaTopicExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from meta_topic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from meta_topic
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from meta_topic
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fsindustry.debussy.metaserver.topic.entity.MetaTopicExample">
+    delete from meta_topic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.fsindustry.debussy.metaserver.topic.entity.MetaTopic">
+    insert into meta_topic (topic_id, topic_name, partition_count, 
+      replication_factor, msg_timestamp_type, create_time, 
+      update_time, create_by, update_by, 
+      enabled, deleted, user_id, cluster_id
+      )
+    values (#{topicId,jdbcType=BIGINT}, #{topicName,jdbcType=VARCHAR}, #{partitionCount,jdbcType=INTEGER}, 
+      #{replicationFactor,jdbcType=INTEGER}, #{msgTimestampType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateBy,jdbcType=BIGINT}, 
+      #{enabled,jdbcType=BIT}, #{deleted,jdbcType=BIT}, #{userId,jdbcType=VARCHAR}, #{clusterId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsindustry.debussy.metaserver.topic.entity.MetaTopic">
+    insert into meta_topic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="topicId != null">
+        topic_id,
+      </if>
+      <if test="topicName != null">
+        topic_name,
+      </if>
+      <if test="partitionCount != null">
+        partition_count,
+      </if>
+      <if test="replicationFactor != null">
+        replication_factor,
+      </if>
+      <if test="msgTimestampType != null">
+        msg_timestamp_type,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="clusterId != null">
+        cluster_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="topicId != null">
+        #{topicId,jdbcType=BIGINT},
+      </if>
+      <if test="topicName != null">
+        #{topicName,jdbcType=VARCHAR},
+      </if>
+      <if test="partitionCount != null">
+        #{partitionCount,jdbcType=INTEGER},
+      </if>
+      <if test="replicationFactor != null">
+        #{replicationFactor,jdbcType=INTEGER},
+      </if>
+      <if test="msgTimestampType != null">
+        #{msgTimestampType,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="clusterId != null">
+        #{clusterId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fsindustry.debussy.metaserver.topic.entity.MetaTopicExample" resultType="java.lang.Long">
+    select count(*) from meta_topic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update meta_topic
+    <set>
+      <if test="record.topicId != null">
+        topic_id = #{record.topicId,jdbcType=BIGINT},
+      </if>
+      <if test="record.topicName != null">
+        topic_name = #{record.topicName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partitionCount != null">
+        partition_count = #{record.partitionCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.replicationFactor != null">
+        replication_factor = #{record.replicationFactor,jdbcType=INTEGER},
+      </if>
+      <if test="record.msgTimestampType != null">
+        msg_timestamp_type = #{record.msgTimestampType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.enabled != null">
+        enabled = #{record.enabled,jdbcType=BIT},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clusterId != null">
+        cluster_id = #{record.clusterId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update meta_topic
+    set topic_id = #{record.topicId,jdbcType=BIGINT},
+      topic_name = #{record.topicName,jdbcType=VARCHAR},
+      partition_count = #{record.partitionCount,jdbcType=INTEGER},
+      replication_factor = #{record.replicationFactor,jdbcType=INTEGER},
+      msg_timestamp_type = #{record.msgTimestampType,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=BIGINT},
+      update_by = #{record.updateBy,jdbcType=BIGINT},
+      enabled = #{record.enabled,jdbcType=BIT},
+      deleted = #{record.deleted,jdbcType=BIT},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      cluster_id = #{record.clusterId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsindustry.debussy.metaserver.topic.entity.MetaTopic">
+    update meta_topic
+    <set>
+      <if test="topicName != null">
+        topic_name = #{topicName,jdbcType=VARCHAR},
+      </if>
+      <if test="partitionCount != null">
+        partition_count = #{partitionCount,jdbcType=INTEGER},
+      </if>
+      <if test="replicationFactor != null">
+        replication_factor = #{replicationFactor,jdbcType=INTEGER},
+      </if>
+      <if test="msgTimestampType != null">
+        msg_timestamp_type = #{msgTimestampType,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="clusterId != null">
+        cluster_id = #{clusterId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsindustry.debussy.metaserver.topic.entity.MetaTopic">
+    update meta_topic
+    set topic_name = #{topicName,jdbcType=VARCHAR},
+      partition_count = #{partitionCount,jdbcType=INTEGER},
+      replication_factor = #{replicationFactor,jdbcType=INTEGER},
+      msg_timestamp_type = #{msgTimestampType,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=BIGINT},
+      update_by = #{updateBy,jdbcType=BIGINT},
+      enabled = #{enabled,jdbcType=BIT},
+      deleted = #{deleted,jdbcType=BIT},
+      user_id = #{userId,jdbcType=VARCHAR},
+      cluster_id = #{clusterId,jdbcType=INTEGER}
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </update>
+</mapper>

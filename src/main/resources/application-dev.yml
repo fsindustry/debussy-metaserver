@@ -41,7 +41,8 @@ spring:
     username: debussy
     password: debussy@123
     platform: h2
-    # schema: classpath:h2/*.sql
+    # schema: classpath:h2/schema/*.sql
+    # data: classpath:h2/data/*.sql
 
 ###########################################
 # 日志相关配置
@@ -49,3 +50,10 @@ spring:
 logging:
   config: classpath:logback-spring.xml
   path: ./logs
+
+###########################################
+# mybatis相关配置
+###########################################
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapping/*.xml

@@ -1,20 +1,28 @@
 // gradle脚本自身的配置
 buildscript {
+
+    // 存放自定义变量
     ext {
         springBootVersion = '2.1.0.RELEASE'
     }
 
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         maven {
-            url "http://maven.scm.baidu.com:8081/nexus/content/groups/public"
+            url "https://plugins.gradle.org/m2/"
         }
+
         mavenLocal()
         mavenCentral()
     }
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        // mybatis-generator 插件路径mybatis-generetor
+        classpath("gradle.plugin.com.arenagod.gradle:mybatis-generator-plugin:1.4")
     }
+
 }
 
 // 项目全局配置
@@ -26,17 +34,25 @@ allprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
+    //引入 mybatis-generator 插件mybatis-generetor
+    apply plugin: 'com.arenagod.gradle.MybatisGenerator'
+
     group = 'com.fsindustry.debussy'
     version = '0.0.1-SNAPSHOT'
     sourceCompatibility = 1.8
 
     // 仓库配置
     repositories {
-        maven {
-            url "http://maven.scm.baidu.com:8081/nexus/content/groups/public"
-        }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         mavenLocal()
         mavenCentral()
+    }
+
+    configurations {
+        //这里需要使用 MyBatis Generator，MySQL 驱动，以及 MyBatis Mapper.
+        //由于代码生成单独运行即可,不需要参与到整个项目的编译，因此在 build.gradle 中添加配置：
+        mybatisGenerator
     }
 
     // 依赖配置
@@ -49,6 +65,15 @@ allprojects {
         runtimeOnly('com.h2database:h2')
         compileOnly('org.projectlombok:lombok')
         testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+        // mybatis代码生成插件
+        compileOnly("org.mybatis.generator:mybatis-generator-core:1.3.7")
+    }
+
+    // mybatis-generator.xml 配置路径
+    mybatisGenerator {
+        verbose = true
+        configFile = 'src/main/resources/mybatis/generator.xml'
     }
 }
 
