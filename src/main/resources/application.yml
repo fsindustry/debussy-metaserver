@@ -2,4 +2,4 @@ spring:
   application:
     name: debussy-metaserver
   profiles:
-    active: prod
+    active: dev
